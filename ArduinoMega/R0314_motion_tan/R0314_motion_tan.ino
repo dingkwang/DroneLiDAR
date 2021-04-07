@@ -1,8 +1,8 @@
 // TDC Start/Stop must have Input signal to perform calibration!!!
 
-#define xp 9 // 1
-#define xm 44 //2
-#define yp 45 //3 
+#define xp 44 //1
+#define yp 45 //2
+#define xm 9  //3 
 #define ym 46 //4 
 
 #define tik 0.031442774 //ms
@@ -111,7 +111,7 @@ void setup() {
   Serial.println(ryer);
   Serial1.write("$VNKMD,1*AF18\r\n");// Disable magnet
 
-  imu_on = true; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning 
+  imu_on = false; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning 
   motion_on = false; // Turn on motion based compensation  
   xAgnPosBias.f = 1.0;
   yAgnPosBias.f = 2.0;
