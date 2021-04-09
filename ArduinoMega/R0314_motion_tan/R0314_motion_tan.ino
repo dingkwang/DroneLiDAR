@@ -5,7 +5,6 @@
 #define xm 9  //3 
 #define ym 46 //4 
 
-#define tik 0.031442774 //ms
 #include <SPI.h>
 
 char buf[10]; 

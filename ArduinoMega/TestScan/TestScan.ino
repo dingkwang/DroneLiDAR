@@ -1,5 +1,3 @@
-// TDC Start/Stop must have Input signal to perform calibration!!!
-
 #define xp 44 //1
 #define yp 45 //2
 #define xm 9  //3 

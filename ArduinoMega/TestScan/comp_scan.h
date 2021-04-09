@@ -3,15 +3,15 @@
 
 
 // Set MEMS max. optical scanning angle, +/-7 degree is the max
-//float thx_top = 7;
-//float thx_bot = -7;
-//float thy_top = 7;
-//float thy_bot = -7;
+float thx_top = 7;
+float thx_bot = -7;
+float thy_top = 7;
+float thy_bot = -7;
 
-float thx_top = 4;
-float thx_bot = -thx_top;
-float thy_top = thx_top;
-float thy_bot = -thx_top;
+//float thx_top = 4;
+//float thx_bot = -thx_top;
+//float thy_top = thx_top;
+//float thy_bot = -thx_top;
 
 
 int px = 16; // {6by6, 6px6px, dly7}
@@ -55,7 +55,6 @@ void comp_scan()
 
   thx_b = thx ;
   thy_b = thy ;
-
 
 
   a2v();
