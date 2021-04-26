@@ -57,7 +57,8 @@ void setup() {
   digitalWrite(EN, HIGH);
   digitalWrite (EN_O, HIGH);
   SPI.begin();
-  SPI.setDataMode(SPI_MODE0);//TDC7200 runs on spi mode0
+//  SPI.setDataMode(SPI_MODE0);//TDC7200 runs on spi mode0
+  SPI.beginTransaction(SPISettings(16000000,MSBFIRST, SPI_MODE0));
 
   // Generate full scanning pattern, px, py in comp_scan.h
   for (i = 0; i < px; i++)

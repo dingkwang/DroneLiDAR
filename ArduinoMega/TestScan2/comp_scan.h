@@ -14,19 +14,26 @@ float thy_bot = -7;
 //float thy_bot = -thx_top;
 
 
-int px = 2; // {6by6, 6px6px, dly7}
-int py = px; // x2
+int px = 20; // {6by6, 6px6px, dly7}
+int py = 20; // x2
 
-int dly  = 0; //1
 
 int vx, vy; // analogy write voltage 0-255
 //int vx_bias, vy_bias, vx_out, vy_out, vy_out_n;
 
 void a2v()// Angle to voltage
 {
-
-  vx = 137.5 + 8.46 * thx_b +  1.0 * thy_b;
-  vy = 120.9 + 0.67 * thx_b - 9.86 * thy_b;
+  // M1 -3V
+  //  vx = 131.7 - 8.67 * thx_b - 0.23 * thy_b;
+  //  vy = 128.2 + 0.08 * thx_b - 12.0 * thy_b;
+  // M2 -3V
+//  vx = 132.9 + 9.2 * thx_b + 1.0 * thy_b;
+//  vy = 126.9 - 1.0 * thx_b + 10.3 * thy_b;
+  // M3 -2V
+  vx = 124.5 -12.4 * thx_b -1.86 * thy_b;
+  vy = 129.6 + 1.3 * thx_b -15.1 * thy_b; 
+//  vx = thx_b;
+//  vy = thy_b;
   vx = min(255, max(0, vx));
   vy = min(255, max(0, vy));
 }
@@ -48,16 +55,16 @@ void comp_scan()
   thy = thya[J];
 
 
-  thx_b = thx ;
-  thy_b = thy ;
+  thx_b = thx;
+  thy_b = thy;
 
 
   a2v();
-  //  Serial.print(",vx,");
-  //  Serial.print(vx);
-  //  Serial.print(",vy,");
-  //  Serial.print(vy);
-  //  Serial.print(",");
+  Serial.print("vx,");
+  Serial.print(vx);
+  Serial.print(",vy,");
+  Serial.print(vy);
+  Serial.print(",\n");
 
   // Output to pins
   analogWrite(xp, vx);       // duty cycle = 1/160 0-255
