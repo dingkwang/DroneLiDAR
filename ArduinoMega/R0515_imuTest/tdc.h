@@ -18,8 +18,8 @@
 #define EN    8  //TDC enable
 #define EN_O  7
 
-#include <FixedPoints.h>
-#include <FixedPointsCommon.h>
+//#include <FixedPoints.h>
+//#include <FixedPointsCommon.h>
 
 unsigned char MST_Data, SLV_Data;
 unsigned char temp;
