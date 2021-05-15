@@ -108,7 +108,7 @@ void read_imu_data(void) {
       pitch.b[i] = in[7 + i];
       roll.b[i] = in[11 + i];
     }
-    Serial.println(String(yaw.f) + "," + String(pitch.f) + "," + String(roll.f));
+//    Serial.println(String(yaw.f) + "," + String(pitch.f) + "," + String(roll.f));
   }
 }
 
