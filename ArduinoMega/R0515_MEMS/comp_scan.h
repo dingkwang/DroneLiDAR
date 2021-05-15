@@ -40,7 +40,7 @@ void a2v()// Angle to voltage
 
 void comp_scan()
 {
-  // Generate raster z scan
+  // Generate raster z scan 
   if (I >= px * 2 - 1) //update vx
     I = 0;
   else I++;
@@ -54,17 +54,28 @@ void comp_scan()
   thx = thxa[I];
   thy = thya[J];
 
+  get_angle(); // Get IMU data
+  
+  if (imu_on) {
+    thx_b = thx - rx;
+    thy_b = thy - ry;
+  }
+  else {
+    thx_b = thx ;
+    thy_b = thy ;
+  }
 
-  thx_b = thx;
-  thy_b = thy;
-
-
+  if (motion_on) {
+    thx_b = thx_b - xAgnPosBias.f;
+    thy_b = thy_b - yAgnPosBias.f;
+  }
+  
   a2v();
-  Serial.print("vx,");
-  Serial.print(vx);
-  Serial.print(",vy,");
-  Serial.print(vy);
-  Serial.print(",\n");
+  //  Serial.print(",vx,");
+  //  Serial.print(vx);
+  //  Serial.print(",vy,");
+  //  Serial.print(vy);
+  //  Serial.print(",");
 
   // Output to pins
   analogWrite(xp, vx);       // duty cycle = 1/160 0-255
