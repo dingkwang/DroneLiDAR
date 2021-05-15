@@ -34,7 +34,7 @@ bool motion_on;
 
 float elapsedTime, currentTime, previousTime;
 float init_time, re_time;
-
+int dly = 0;
 
 #include "tdc.h"
 #include "readIMU.h"
@@ -98,38 +98,39 @@ void setup() {
   Serial1.begin(115200);// 19(RX - TX), 18(TX - RX)
   Serial1.write("$VNKMD,0*BF39\r\n"); //Enable magnet
   Serial.println("calibrating imu...");
-//  cal_bias();// Calculate IMU initial static value
-//  get_angle();// try to read IMU, expect [0, 0]
-//  while (abs(rx) > 0.5) { 
-//    Serial.println(rx);
-//    cal_bias();
-//    delay(10);
-//  }
-//  Serial.print("rxer,"); // Print IMU actual value 
-//  Serial.println(rxer);
-//  Serial.print("ryer,");
-//  Serial.println(ryer);
+  cal_bias();// Calculate IMU initial static value
+  get_angle();// try to read IMU, expect [0, 0]
+  while (abs(rx) > 0.5) { 
+    Serial.println(rx);
+    cal_bias();
+    delay(10);
+  }
+  Serial.print("rxer,"); // Print IMU actual value 
+  Serial.println(rxer);
+  Serial.print("ryer,");
+  Serial.println(ryer);
   Serial1.write("$VNKMD,1*AF18\r\n");// Disable magnet
 //
-//  imu_on = false; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning 
-//  motion_on = false; // Turn on motion based compensation  
-//  xAgnPosBias.f = 1.0;
-//  yAgnPosBias.f = 2.0;
+  imu_on = false; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning 
+  motion_on = false; // Turn on motion based compensation  
+  xAgnPosBias.f = 1.0;
+  yAgnPosBias.f = 2.0;
 }// end setup
 
 void loop() {
+//  read_imu_data();
   
   comp_scan();
   
 //
 //
-//  // This print the Compensated Angle = APD view angle
-//  Serial.print(thx_b, 1);
-//  Serial.print(",");
-//  Serial.print(thy_b, 1);
-//  Serial.print(",");
-//
-//  delay(dly);// Wait the MEMS mirror to stablize 
+  // This print the Compensated Angle = APD view angle
+  Serial.print(thx_b, 1);
+  Serial.print(",");
+  Serial.print(thy_b, 1);
+  Serial.print(",");
+
+  delay(dly);// Wait the MEMS mirror to stablize 
 //
 //  i = 3;// TDC has sync issue, make sure the TDC value in range 
 //  while (1) {
@@ -153,20 +154,20 @@ void loop() {
 //    else i--;
 //
 //  }
-//  // Print IMU data(always print)
-//  Serial.print(',');
-//  Serial.print(rx, 1);
-//  Serial.print(",");
-//  Serial.print(ry, 1);
-//
-//  // Print px, py index for drawing
-//  Serial.print(",");
-//  sprintf(buf, "%02d", I);
-//  Serial.print(buf);
-//  Serial.print(',');
-//  sprintf(buf, "%02d", J);
-//  Serial.print(buf);
-//  //
+// Print IMU data(always print)
+  Serial.print(',');
+  Serial.print(rx, 1);
+  Serial.print(",");
+  Serial.print(ry, 1);
+
+  // Print px, py index for drawing
+  Serial.print(",");
+  sprintf(buf, "%02d", I);
+  Serial.print(buf);
+  Serial.print(',');
+  sprintf(buf, "%02d", J);
+  Serial.print(buf);
+  //
 ////  Serial.print(',');
 ////  Serial.print(xAgnPosBias.f);
 ////  Serial.print(',');
