@@ -111,7 +111,7 @@ void setup() {
   Serial.println(ryer);
   Serial1.write("$VNKMD,1*AF18\r\n");// Disable magnet
 //
-  imu_on = false; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning 
+  imu_on = true; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning 
   motion_on = false; // Turn on motion based compensation  
   xAgnPosBias.f = 1.0;
   yAgnPosBias.f = 2.0;
