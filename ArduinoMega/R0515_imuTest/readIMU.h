@@ -74,7 +74,14 @@ void cal_bias(void) { // Acquire bias_ave=100 IMU data, average and get bias
 
 void get_angle(void) { // Substrate the IMU real angle to local angle, sometimes have issue
   rIMU2();
+
   rx = yaw.f - rxer;
+  if (rx < -180) {
+    rx = rx + 360;
+  }
+  if ( > 180) {
+    rx = rx - 360;
+  }
   ry = pitch.f - ryer;
   //  Serial.print("\n get_angle,ryer,");
   //  Serial.print(rxer);
@@ -108,7 +115,7 @@ void read_imu_data(void) {
       pitch.b[i] = in[7 + i];
       roll.b[i] = in[11 + i];
     }
-//    Serial.println(String(yaw.f) + "," + String(pitch.f) + "," + String(roll.f));
+    //    Serial.println(String(yaw.f) + "," + String(pitch.f) + "," + String(roll.f));
   }
 }
 

@@ -47,7 +47,7 @@ void setup() {
   TCCR5B = TCCR5B & B11111000 | B00000001; // D44, 45, 46
   // 
   
-  Serial.begin(250000); //Set your serial monitor to this frequency 115200
+  Serial.begin(115200); //Set your serial monitor to this frequency 115200
   // TDC set
   pinMode (CS_1, OUTPUT);
   pinMode (CS_2, OUTPUT);
@@ -172,7 +172,7 @@ void loop() {
 ////  Serial.print(xAgnPosBias.f);
 ////  Serial.print(',');
 ////  Serial.print(yAgnPosBias.f);
-////  Serial.print("\n");
+  Serial.print("\n");
 }
 
 void position() {

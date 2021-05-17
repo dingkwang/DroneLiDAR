@@ -60,7 +60,7 @@ void cal_bias(void) { // Acquire bias_ave=100 IMU data, average and get bias
   for (i = 0; i < bias_ave; i++) {
     rIMU2();
     rxer = yaw.f + rxer;
-    ryer = pitch.f + ryer;
+    ryer = roll.f + ryer;
     delay(2);
   }
   rxer = rxer / bias_ave;
@@ -75,7 +75,8 @@ void cal_bias(void) { // Acquire bias_ave=100 IMU data, average and get bias
 void get_angle(void) { // Substrate the IMU real angle to local angle, sometimes have issue
   rIMU2();
   rx = yaw.f - rxer;
-  ry = pitch.f - ryer;
+  ry = roll.f - ryer;
+//  ry = pitch.f - ryer;
   //  Serial.print("\n get_angle,ryer,");
   //  Serial.print(rxer);
   //  Serial.print("(");

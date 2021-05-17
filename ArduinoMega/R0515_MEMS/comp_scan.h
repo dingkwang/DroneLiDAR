@@ -57,7 +57,7 @@ void comp_scan()
   get_angle(); // Get IMU data
   
   if (imu_on) {
-    thx_b = thx - rx;
+    thx_b = thx  + rx;
     thy_b = thy - ry;
   }
   else {
