@@ -122,8 +122,6 @@ void loop() {
 
   comp_scan();
 
-  //
-  //
   // This print the Compensated Angle = APD view angle
   Serial.print(thx_b, 1);
   Serial.print(",");
@@ -131,7 +129,8 @@ void loop() {
   Serial.print(",");
 
   delay(dly);// Wait the MEMS mirror to stablize
-
+  
+  tdc();
   Serial.print(tof_t1);
   Serial.print(",");
   Serial.print(tof_t2);
