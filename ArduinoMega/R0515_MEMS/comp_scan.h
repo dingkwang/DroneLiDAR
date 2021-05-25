@@ -8,7 +8,7 @@
 //float thy_top = 7;
 //float thy_bot = -7;
 
-float thx_top = 4;
+float thx_top = 0;
 float thx_bot = -thx_top;
 float thy_top = thx_top;
 float thy_bot = -thx_top;
@@ -27,8 +27,11 @@ void a2v()// Angle to voltage
   //  vx = 131.7 - 8.67 * thx_b - 0.23 * thy_b;
   //  vy = 128.2 + 0.08 * thx_b - 12.0 * thy_b;
   // M2 -3V
-  vx = 132.9 + 9.2 * thx_b + 1.0 * thy_b;
-  vy = 126.9 - 1.0 * thx_b + 10.3 * thy_b;
+  vx = 132.9 + 9.5 * thx_b + 1.0 * thy_b;
+  vy = 126.9 - 1.0 * thx_b + 10.5 * thy_b;
+  
+//  vx = 132.9 + 9.2 * thx_b + 1.0 * thy_b;
+//  vy = 126.9 - 1.0 * thx_b + 10.3 * thy_b;
   // M3 -2V
 //  vx = 124.5 -12.4 * thx_b -1.86 * thy_b;
 //  vy = 129.6 + 1.3 * thx_b -15.1 * thy_b; 
