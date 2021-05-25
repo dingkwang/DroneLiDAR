@@ -26,7 +26,7 @@ with serial.Serial("com5", 115200) as ser:
     for line in ser:
         # print("lineLength = ", len(line))
 
-        if (len(line) >= 29 and len(line) <= 33):
+        if (len(line) >= 29 and len(line) <= 34):
             t = t+1
             try:
                 a = line.decode("ascii")

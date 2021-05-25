@@ -8,7 +8,7 @@ import joblib
 
 from os import chdir
 
-chdir(r"Calibration_Data_030621/")
+# chdir(r"Calibration_Data_030621/")
 
 #%%
 def prep(file_name, calib):
@@ -25,7 +25,7 @@ def prep(file_name, calib):
 
     return x, y
 
-filename = "t*.csv"
+filename = "c*.csv"
 
 x = np.empty([1, 4]) 
 
