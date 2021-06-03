@@ -47,8 +47,6 @@ ser.close()
 f.close()
 
 #%%
-import numpy as np
-
 dst = np.genfromtxt(filename, delimiter=',')
 
 dst = dst[100:]

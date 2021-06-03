@@ -99,7 +99,7 @@ void check_sync_byte(void) {
 
 // Read the IMU bytes
 void read_imu_data(void) {
-  Serial1.readBytes(in, 17); //41
+  Serial1.readBytes(in, 17); // 0 - 16
   checksum.b[0] = in[16];
   checksum.b[1] = in[15];
 
@@ -107,7 +107,7 @@ void read_imu_data(void) {
     for (int i = 0; i < 4; i++) {
       yaw.b[i] = in[3 + i];
       pitch.b[i] = in[7 + i];
-      roll.b[i] = in[11 + i];
+      roll.b[i] = in[11 + i]; // 11 12 13 14
     }
 //    Serial.println(String(yaw.f) + "," + String(pitch.f) + "," + String(roll.f));
   }

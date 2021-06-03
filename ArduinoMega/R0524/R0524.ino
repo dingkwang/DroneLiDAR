@@ -7,7 +7,7 @@
 
 #include <SPI.h>
 
-  char buf[10];
+char buf[10];
 float thxa[100], thya[100]; // max. pixels
 
 // for motion tracking system input
@@ -142,9 +142,9 @@ void loop() {
       break;
     }
     tdc();
-    if (tof_t1 < 200 && tof_t1 > 150 && tof_t2 > 140 && tof_t2 < 200) { // Expected tof_t1, t2 range
-      tof_t1 = (tof_t1 - 150) * 10;// Encode tdc value to save printing time
-      tof_t2 = (tof_t2 - 140) * 10;
+    if (tof_t1 < 250 && tof_t1 > 150 && tof_t2 > 140 && tof_t2 < 200) { // Expected tof_t1, t2 range
+//      tof_t1 = (tof_t1 - 150) * 10;// Encode tdc value to save printing time
+//      tof_t2 = (tof_t2 - 140) * 10;
       Serial.print(tof_t1, 0);
       Serial.print(",");
       Serial.print(tof_t2, 0);
