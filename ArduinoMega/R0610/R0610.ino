@@ -53,7 +53,8 @@ void setup() {
   //set pwm // set MEMS acting frequency to 15kHz
   TCCR2B = TCCR2B & B11111000 | B00000001;      // D9 for PWM frequency of 40k Hz
   TCCR5B = TCCR5B & B11111000 | B00000001; // D44, 45, 46
-
+  Serial3.begin (115200);
+  Serial2.begin (115200);
   Serial.begin(115200); //Set your serial monitor to this frequency 115200
   // TDC set
   pinMode (CS_1, OUTPUT);
@@ -182,5 +183,83 @@ void loop() {
   }
 
   Serial.print("\n");
-  //  position();
+  read_vicon();
+}
+
+
+
+
+
+float x, y, z; //vicon position, updated by read_vicon(), used in aim_at_target()
+char *field;  //temporary pointer
+
+size_t         count     = 0;
+const size_t   MAX_CHARS = 64;
+char           line[ MAX_CHARS ];
+
+
+
+
+void read_vicon(){   //use in loop()
+
+
+  if (lineReady( Serial2 )) { 
+    field = strtok( line, "," );
+    x = atof( field );
+    field = strtok( NULL, "," );
+    y = atof( field );
+    field = strtok( NULL, "," );
+    z = atof( field );
+  }
+  Serial3.print("1\n");
+  Serial3.print(x);
+  Serial3.print(",");
+  Serial3.print(y);
+  Serial3.print(",");
+  Serial3.print(z);
+  Serial3.print("\n");
+}
+
+
+
+bool lineReady( Stream & input )    // could be Serial or ethernet client
+{
+  bool          ready     = false;
+  const char    endMarker = '\n';
+
+  while (input.available()) {
+
+    char c = input.read();
+
+    if (c != endMarker) {
+      // Only save the printable characters, if there's room
+      if ((' ' <= c) and (count < MAX_CHARS-1)) {
+        line[ count++ ] = c;
+      }
+    } else {
+      //  It's the end marker, line is completely received
+      line[count] = '\0'; // terminate the string
+      count       = 0;    // reset for next time
+      ready       = true;
+      break;
+    }
+  }
+
+  return ready;
+
+} // lineReady
+
+
+
+
+void aim_at_target(float TargetX, float TargetY, float TargetZ)
+{
+  TargetX = 15.0; //hard coding right now, can comment
+  TargetY = 15.0;
+  TargetZ = -1.0;
+  float vectorx = TargetX - x; //x,y,z is the lidar's position
+  float vectory = TargetY - y;
+  float vectorz = TargetZ - z;
+  float azimuth_angle = atan2(vectory, vectorx);
+  float elevation_angle = atan2(vectorz, sqrt(pow(vectorx, 2) + pow(vectory, 2)));
 }
