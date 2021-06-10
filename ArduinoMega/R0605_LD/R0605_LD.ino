@@ -7,6 +7,11 @@
 
 #include <SPI.h>
 
+bool isTDC = 0;
+bool printPXY = 0;
+bool printIMU = 1;
+bool isScan = printIMU;
+
 
 char buf[10];
 float thxa[100], thya[100]; // max. pixels
@@ -114,128 +119,77 @@ void setup() {
   Serial.println(ryer);
   Serial1.write("$VNKMD,1*AF18\r\n");// Disable magnet
   //
-  imu_on = true; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning
+
+  imu_on = 1; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning
   motion_on = false; // Turn on motion based compensation
-  xAgnPosBias.f = 1.0;
-  yAgnPosBias.f = 2.0;
+
 }// end setup
 
 void loop() {
-  //  read_imu_data();
 
-  comp_scan();
-
-  // This print the Compensated Angle = APD view angle
-  Serial.print(thx_b, 1);
-  Serial.print(",");
-  Serial.print(thy_b, 1);
-  Serial.print(",");
+  if (isScan) {
+    comp_scan();
+    // This print the Compensated Angle = APD view angle
+    Serial.print(thx_b, 1);
+    Serial.print(",");
+    Serial.print(thy_b, 1);
+    Serial.print(",");
+  }
 
   delay(dly);// Wait the MEMS mirror to stablize
 
   //
-  i = 3;// TDC has sync issue, make sure the TDC value in range
-  while (1) {
-    if (i <= 0 ) { // After 3 test TDC acquization, if failed, make all 0
-      tof_t1 = 0;
-      tof_t2 = 0;
-      Serial.print(tof_t1, 0);
-      Serial.print(",");
-      Serial.print(tof_t2, 0);
-      break;
+  if (isTDC) {
+    i = 3;// TDC has sync issue, make sure the TDC value in range
+    while (1) {
+      if (i <= 0 ) { // After 3 test TDC acquization, if failed, make all 0
+        tof_t1 = 0;
+        tof_t2 = 0;
+        Serial.print(tof_t1, 0);
+        Serial.print(",");
+        Serial.print(tof_t2, 0);
+        break;
+      }
+      tdc();
+      if (tof_t1 < 200 && tof_t1 > 160 && tof_t2 > 150 && tof_t2 < 190 ) { // Expected tof_t1, t2 range
+        //    if (1) {
+        //tof_t1 = (tof_t1 - 150) * 10;// Encode tdc value to save printing time
+        //tof_t2 = (tof_t2 - 140) * 10;
+        Serial.print(tof_t1);
+        Serial.print(",");
+        Serial.print(tof_t2);
+        break;
+      }
+      else i--;
     }
-    tdc();
-    if (tof_t1 < 210 && tof_t1 > 100 && tof_t2 > 100 && tof_t2 < 210) { // Expected tof_t1, t2 range
-      //    if (1) {
-      //tof_t1 = (tof_t1 - 150) * 10;// Encode tdc value to save printing time
-      //tof_t2 = (tof_t2 - 140) * 10;
-      Serial.print(tof_t1);
-      Serial.print(",");
-      Serial.print(tof_t2);
-      break;
-    }
-    else i--;
+  } // isTDC
 
-  }
   // Print IMU data(always print)
-  Serial.print(',');
-  Serial.print(rx, 1);
-  Serial.print(",");
-  Serial.print(ry, 1);
+  if (printIMU) {
+    Serial.print(',');
+    Serial.print(rx, 1);
+    Serial.print(",");
+    Serial.print(ry, 1);
+  }
 
   // Print px, py index for drawing
-  Serial.print(",");
-  sprintf(buf, "%02d", I);
-  Serial.print(buf);
-  Serial.print(',');
-  sprintf(buf, "%02d", J);
-  Serial.print(buf);
-  //
-  ////  Serial.print(',');
-  ////  Serial.print(xAgnPosBias.f);
-  ////  Serial.print(',');
-  ////  Serial.print(yAgnPosBias.f);
+  if (printPXY) {
+    Serial.print(",");
+    sprintf(buf, "%02d", I);
+    Serial.print(buf);
+    Serial.print(',');
+    sprintf(buf, "%02d", J);
+    Serial.print(buf);
+  }
+
   Serial.print("\n");
   //  position();
 }
 int pos;
-/*
-  void position() {
-
-  pos=Serial.readBytes().toInt();
-  Serial.print("pos received\n");
-  Serial.print(pos+1);
-  Serial.print(" pos end\n");
-
-  }
-*/
 int rlen;
 String position_string;
 float x, y, z;
-void position() {
-  unsigned long StartTime = millis();
 
-  if (Serial.available() > 0) {
-    //rlen=Serial.readBytes(in, 9);
-
-    position_string = Serial.readString();
-
-  }
-  x = (float)position_string.substring(0, 9).toInt();
-  x = x / 10000;
-  y = (float)position_string.substring(9, 18).toInt();
-  y = y / 10000;
-  z = (float)position_string.substring(18, 27).toInt();
-  z = z / 10000;
-  /*
-    Serial.print("\n");
-    Serial.print(position_string);
-    Serial.print("\n");
-    Serial.print("x is ");
-    Serial.print(x);
-    Serial.print("\n");
-    Serial.print("y is ");
-    Serial.print(y);
-    Serial.print("\n");
-    Serial.print("z is ");
-    Serial.print(z);
-    Serial.print("\n");
-    /*
-    for (int i = 0; i < rlen; i++) {
-    Serial.print(in[i]);
-    Serial.print(",");
-    //xAgnPosBias.b[i] = in[3 + i];
-    //yAgnPosBias.b[i] = in[7 + i];
-    }*/
-
-  //  unsigned long CurrentTime = millis();
-  //  unsigned long ElapsedTime = CurrentTime - StartTime;
-  //  Serial.print("Elapsed Time: ");
-  //  Serial.print(ElapsedTime);
-  //  Serial.print("\n");
-
-  Serial.print("\n");
-}
 /*
   for (int i = 0; i < 4; i++) {
   xAgnPosBias.b[i] = in[3 + i];

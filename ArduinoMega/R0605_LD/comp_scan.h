@@ -8,7 +8,7 @@
 //float thy_top = 7;
 //float thy_bot = -7;
 
-float thx_top = 4;
+float thx_top = 0.1;
 float thx_bot = -thx_top;
 float thy_top = thx_top;
 float thy_bot = -thx_top;
@@ -23,9 +23,16 @@ int vx, vy; // analogy write voltage 0-255
 
 void a2v()// Angle to voltage
 {
-//  LD2 50 - 200 !!!!!!!!!!!!!!!!!
-  vx = 124.9 - 8.0 * thx_b - 0.2 * thy_b;
-  vy = 129.2 - 0.45 * thx_b + 9.2 * thy_b;
+  //  LD2 50 - 200 !!!!!!!!!!!!!!!!!
+  //  vx = 124.9 - 8.0 * thx_b - 0.2 * thy_b; // Original
+
+  //  Tripod:
+//   vx = 124.9 - 4.5 * thx_b - 0.2 * thy_b;
+//    vy = 129.2 - 0.45 * thx_b + 9.2 * thy_b;
+
+// On Drone
+  vx = 124.9 - 5.0 * thx_b - 0.2 * thy_b;
+  vy = 129.2 - 0.45 * thx_b + 7.5 * thy_b;
   vx = min(200, max(50, vx));
   vy = min(200, max(50, vy));
 }
@@ -49,7 +56,7 @@ void comp_scan()
   get_angle(); // Get IMU data
 
   if (imu_on) {
-    thx_b = thx  + rx;
+    thx_b = thx  - rx; // on back
     thy_b = thy - ry;
   }
   else {

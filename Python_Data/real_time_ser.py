@@ -15,11 +15,20 @@ file = open(fn, 'w')
 
 model = joblib.load(modelname)
 
+sizex = 16
+sizey = 16
+sizeall = sizex * sizey
+
+
+thre_f = 300
+thre_c = 200
+
+
 def Sergetline():
     while (1):
         line= ser.readline()
         # print("lineLength = ", len(line))
-        if len(line) >= 29 and len(line) <= 33 : # simple error check
+        if len(line) >= 36 and len(line) <= 42 : # simple error check
             # print(line)
             try:
                  a = line.decode("ascii")
@@ -56,9 +65,7 @@ def pol2cart(thx, thy, d, thre_f, thre_c):
     return npt, colorz
 
 
-sizex = 16
-sizey = 16
-sizeall = sizex * sizey
+
 
 frame_dat = np.zeros((sizeall, 8), dtype="float") ## store raw data[Scanx, scanY, tof1, tof2]
 
@@ -71,8 +78,6 @@ color[:,1] = 1
 color[:,2] = 1
 color[:,3] = 1
 
-thre_f = 300
-thre_c = 200
 
 #Collect whole frame data 
 xyi = 0
