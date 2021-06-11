@@ -14,8 +14,8 @@ float thy_top = thx_top;
 float thy_bot = -thx_top;
 
 
-int px = 3; // {6by6, 6px6px, dly7}
-int py = 3; // x2
+int px = 20; // {6by6, 6px6px, dly7}
+int py = 20; // x2
 
 
 int vx, vy; // analogy write voltage 0-255

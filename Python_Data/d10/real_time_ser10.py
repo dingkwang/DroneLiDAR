@@ -12,7 +12,7 @@ from time import strftime
 
 modelname = 'model_i.sav'
 
-sizex = 3
+sizex = 20
 sizey = sizex
 sizeall = sizex * sizey
 
@@ -21,7 +21,7 @@ time = strftime("%d_%H_%M")
 fn = 'Data_' + time + '_c.csv'
 file = open(fn, 'w')
 
-sercom = "COM15"
+sercom = "/dev/ttyACM0"
 model = joblib.load(modelname)
 ser=serial.Serial(sercom,115200)
 
@@ -136,7 +136,7 @@ w.show()
 w.setWindowTitle('pyqtgraph example: GLScatterPlotItem')
 w.setFixedSize(400,400)
 # w.setCameraPosition(distance=120, elevation = 90, azimuth=270)
-w.setCameraPosition(distance=120, elevation = 90, azimuth=270)
+w.setCameraPosition(distance=250, elevation = 90, azimuth=270)
 
 g = gl.GLGridItem()
 w.addItem(g)

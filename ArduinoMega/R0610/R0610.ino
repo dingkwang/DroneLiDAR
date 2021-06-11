@@ -25,7 +25,7 @@ bool motion_on;
 
 float elapsedTime, currentTime, previousTime;
 float init_time, re_time;
-int dly = 400;
+int dly = 0;
 
 bool read_from_python = 0;
 
@@ -105,7 +105,7 @@ void setup() {
   Serial1.write("$VNKMD,1*AF18\r\n");// Disable magnet
   //
 
-  imu_on = 1; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning
+  imu_on = 0; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning
   motion_on = false; // Turn on motion based compensation
 
 }// end setup
