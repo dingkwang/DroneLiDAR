@@ -8,14 +8,14 @@
 //float thy_top = 7;
 //float thy_bot = -7;
 
-float thx_top = 3.5;
+float thx_top = 3;
 float thx_bot = -thx_top;
 float thy_top = thx_top;
 float thy_bot = -thx_top;
 
 
-int px = 20; // {6by6, 6px6px, dly7}
-int py = 20; // x2
+int px = 3; // {6by6, 6px6px, dly7}
+int py = 3; // x2
 
 
 int vx, vy; // analogy write voltage 0-255
@@ -23,18 +23,15 @@ int vx, vy; // analogy write voltage 0-255
 
 void a2v()// Angle to voltage
 {
-  //  LD2 50 - 200 !!!!!!!!!!!!!!!!!
-  //  vx = 124.9 - 8.0 * thx_b - 0.2 * thy_b; // Original
+  // M2 -3V Org
+//  vx = 132.9 + 9.5 * thx_b + 1.0 * thy_b;
+//  vy = 126.9 - 1.0 * thx_b + 10.5 * thy_b;
+// 0610
+  vx = 132.9 + 20.5 * thx_b + 1.0 * thy_b;
+  vy = 126.9 - 1.0 * thx_b + 25.0 * thy_b;
 
-  //  Tripod:
-//   vx = 124.9 - 4.5 * thx_b - 0.2 * thy_b;
-//    vy = 129.2 - 0.45 * thx_b + 9.2 * thy_b;
-
-// On Drone
-  vx = 124.9 - 6.5 * thx_b - 2.2 * thy_b;
-  vy = 130  + 0.1  * thx_b + 11.5 * thy_b;
-  vx = min(200, max(50, vx));
-  vy = min(200, max(50, vy));
+  vx = min(255, max(0, vx));
+  vy = min(255, max(0, vy));
 }
 
 void comp_scan()
@@ -65,8 +62,8 @@ void comp_scan()
   }
 
   if (motion_on) {
-    thx_b = thx_b - xAgnPosBias.f;
-    thy_b = thy_b - yAgnPosBias.f;
+    thx_b = thx_b;
+    thy_b = thy_b;
   }
 
   a2v();

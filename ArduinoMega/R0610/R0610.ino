@@ -12,23 +12,8 @@ bool printPXY = 1;
 bool printIMU = 1;
 bool isScan = printIMU;
 
-
 char buf[10];
 float thxa[100], thya[100]; // max. pixels
-
-// for motion tracking system input
-union {
-  float f;
-  byte b[4];
-} zdist;// est. target distance to LiDAR
-union {
-  float f;
-  byte b[4];
-} xAgnPosBias;
-union {
-  float f;
-  byte b[4];
-} yAgnPosBias;
 
 
 int i;
@@ -40,7 +25,7 @@ bool motion_on;
 
 float elapsedTime, currentTime, previousTime;
 float init_time, re_time;
-int dly = 0;
+int dly = 400;
 
 bool read_from_python = 0;
 
@@ -120,7 +105,7 @@ void setup() {
   Serial1.write("$VNKMD,1*AF18\r\n");// Disable magnet
   //
 
-  imu_on = 0; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning
+  imu_on = 1; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning
   motion_on = false; // Turn on motion based compensation
 
 }// end setup
@@ -188,8 +173,6 @@ void loop() {
 
 
 
-
-
 float x, y, z; //vicon position, updated by read_vicon(), used in aim_at_target()
 char *field;  //temporary pointer
 
@@ -198,12 +181,9 @@ const size_t   MAX_CHARS = 64;
 char           line[ MAX_CHARS ];
 
 
+void read_vicon() {  //use in loop()
 
-
-void read_vicon(){   //use in loop()
-
-
-  if (lineReady( Serial2 )) { 
+  if (lineReady( Serial2 )) {
     field = strtok( line, "," );
     x = atof( field );
     field = strtok( NULL, "," );
@@ -211,16 +191,14 @@ void read_vicon(){   //use in loop()
     field = strtok( NULL, "," );
     z = atof( field );
   }
-  Serial3.print("1\n");
-  Serial3.print(x);
-  Serial3.print(",");
-  Serial3.print(y);
-  Serial3.print(",");
-  Serial3.print(z);
-  Serial3.print("\n");
+  //  Serial.print("1\n");
+  //  Serial.print(x);
+  //  Serial.print(",");
+  //  Serial.print(y);
+  //  Serial.print(",");
+  //  Serial.print(z);
+  //  Serial.print("\n");
 }
-
-
 
 bool lineReady( Stream & input )    // could be Serial or ethernet client
 {
@@ -228,12 +206,10 @@ bool lineReady( Stream & input )    // could be Serial or ethernet client
   const char    endMarker = '\n';
 
   while (input.available()) {
-
     char c = input.read();
-
     if (c != endMarker) {
       // Only save the printable characters, if there's room
-      if ((' ' <= c) and (count < MAX_CHARS-1)) {
+      if ((' ' <= c) and (count < MAX_CHARS - 1)) {
         line[ count++ ] = c;
       }
     } else {
@@ -244,9 +220,7 @@ bool lineReady( Stream & input )    // could be Serial or ethernet client
       break;
     }
   }
-
   return ready;
-
 } // lineReady
 
 
@@ -254,9 +228,9 @@ bool lineReady( Stream & input )    // could be Serial or ethernet client
 
 void aim_at_target(float TargetX, float TargetY, float TargetZ)
 {
-  TargetX = 15.0; //hard coding right now, can comment
-  TargetY = 15.0;
-  TargetZ = -1.0;
+  //  TargetX = 15.0; //hard coding right now, can comment
+  //  TargetY = 15.0;
+  //  TargetZ = -1.0;
   float vectorx = TargetX - x; //x,y,z is the lidar's position
   float vectory = TargetY - y;
   float vectorz = TargetZ - z;
