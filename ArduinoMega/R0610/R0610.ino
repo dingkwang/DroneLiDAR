@@ -20,7 +20,7 @@ int i;
 int j;
 int I = 0, J = 0;
 int multi;
-bool imu_on;
+bool imu_on  =0;
 bool motion_on;
 
 float elapsedTime, currentTime, previousTime;
@@ -104,8 +104,6 @@ void setup() {
   Serial.println(ryer);
   Serial1.write("$VNKMD,1*AF18\r\n");// Disable magnet
   //
-
-  imu_on = 0; // Turn on IMU MEMS compensation, otherwise MEMS not compensated scanning
   motion_on = false; // Turn on motion based compensation
 
 }// end setup

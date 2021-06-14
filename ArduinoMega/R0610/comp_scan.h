@@ -14,8 +14,8 @@ float thy_top = thx_top;
 float thy_bot = -thx_top;
 
 
-int px = 20; // {6by6, 6px6px, dly7}
-int py = 20; // x2
+int px = 10; // {6by6, 6px6px, dly7}
+int py = 10; // x2
 
 
 int vx, vy; // analogy write voltage 0-255
@@ -27,7 +27,7 @@ void a2v()// Angle to voltage
 //  vx = 132.9 + 9.5 * thx_b + 1.0 * thy_b;
 //  vy = 126.9 - 1.0 * thx_b + 10.5 * thy_b;
 // 0610
-  vx = 132.9 + 20.5 * thx_b + 1.0 * thy_b;
+  vx = 132.9 + 20.5 * thx_b + 1.5 * thy_b;
   vy = 126.9 - 1.0 * thx_b + 25.0 * thy_b;
 
   vx = min(255, max(0, vx));
