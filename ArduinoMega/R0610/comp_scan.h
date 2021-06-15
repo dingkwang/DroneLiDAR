@@ -8,7 +8,7 @@
 //float thy_top = 7;
 //float thy_bot = -7;
 
-float thx_top = 3;
+float thx_top = 0;
 float thx_bot = -thx_top;
 float thy_top = thx_top;
 float thy_bot = -thx_top;
@@ -24,9 +24,9 @@ int vx, vy; // analogy write voltage 0-255
 void a2v()// Angle to voltage
 {
   // M2 -3V Org
-//  vx = 132.9 + 9.5 * thx_b + 1.0 * thy_b;
-//  vy = 126.9 - 1.0 * thx_b + 10.5 * thy_b;
-// 0610
+  //  vx = 132.9 + 9.5 * thx_b + 1.0 * thy_b;
+  //  vy = 126.9 - 1.0 * thx_b + 10.5 * thy_b;
+  // 0610
   vx = 132.9 + 20.5 * thx_b + 1.5 * thy_b;
   vy = 126.9 - 1.0 * thx_b + 25.0 * thy_b;
 
@@ -53,18 +53,29 @@ void comp_scan()
   get_angle(); // Get IMU data
 
   if (imu_on) {
-    thx_b = thx  - rx; // on back
+    thx_b = thx - rx; // on back
     thy_b = thy - ry;
   }
   else {
     thx_b = thx ;
     thy_b = thy ;
   }
-
+  
   if (motion_on) {
-    thx_b = thx_b;
-    thy_b = thy_b;
+    thx_b = thx_b - azimuth_angle * 180.0 / 3.1415926;
+    thy_b = thy_b + elevation_angle * 180.0 / 3.1415926;
   }
+//  Serial.print("Azimuth: ");
+//  Serial.print(azimuth_angle * 180.0 / 3.1415926);
+//  Serial.print(",");
+//  Serial.print("Elevation: ");
+//  Serial.print(elevation_angle * 180.0 / 3.1415926);
+//  Serial.print(",");
+//  
+//  Serial.print(thx_b, 1);
+//  Serial.print(",");
+//  Serial.print(thy_b, 1);
+//  Serial.print(",");
 
   a2v();
   //  Serial.print(",vx,");

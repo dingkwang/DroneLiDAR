@@ -7,8 +7,8 @@
 
 #include <SPI.h>
 
-bool isTDC = 1;
-bool printPXY = 1;
+bool isTDC = 0;
+bool printPXY = 0;
 bool printIMU = 1;
 bool isScan = printIMU;
 
@@ -16,12 +16,19 @@ char buf[10];
 float thxa[100], thya[100]; // max. pixels
 
 
+float TargetX = 1.24;
+float TargetY = -0.175;
+float TargetZ = 0.78;
+float azimuth_angle = 0.0;
+float elevation_angle = 0.0;
+
+
 int i;
 int j;
 int I = 0, J = 0;
 int multi;
-bool imu_on  =0;
-bool motion_on;
+bool imu_on  = 1;
+bool motion_on = 1;
 
 float elapsedTime, currentTime, previousTime;
 float init_time, re_time;
@@ -104,7 +111,6 @@ void setup() {
   Serial.println(ryer);
   Serial1.write("$VNKMD,1*AF18\r\n");// Disable magnet
   //
-  motion_on = false; // Turn on motion based compensation
 
 }// end setup
 
@@ -165,8 +171,17 @@ void loop() {
     Serial.print(buf);
   }
 
-  Serial.print("\n");
   read_vicon();
+  aim_at_target(TargetX, TargetY, TargetZ);
+  Serial.print("Azimuth: ");
+  Serial.print(azimuth_angle * 180.0 / 3.1415926);
+  Serial.print(",");
+  Serial.print("Elevation: ");
+  Serial.print(elevation_angle * 180.0 / 3.1415926);
+  //azimuth_angle
+
+  Serial.print("\n");
+
 }
 
 
@@ -189,13 +204,13 @@ void read_vicon() {  //use in loop()
     field = strtok( NULL, "," );
     z = atof( field );
   }
-  //  Serial.print("1\n");
-  //  Serial.print(x);
-  //  Serial.print(",");
-  //  Serial.print(y);
-  //  Serial.print(",");
-  //  Serial.print(z);
-  //  Serial.print("\n");
+  //    Serial.print(",position,");
+  //    Serial.print(x);
+  //    Serial.print(",");
+  //    Serial.print(y);
+  //    Serial.print(",");
+  //    Serial.print(z);
+  //Serial.print("\n");
 }
 
 bool lineReady( Stream & input )    // could be Serial or ethernet client
@@ -232,6 +247,6 @@ void aim_at_target(float TargetX, float TargetY, float TargetZ)
   float vectorx = TargetX - x; //x,y,z is the lidar's position
   float vectory = TargetY - y;
   float vectorz = TargetZ - z;
-  float azimuth_angle = atan2(vectory, vectorx);
-  float elevation_angle = atan2(vectorz, sqrt(pow(vectorx, 2) + pow(vectory, 2)));
+  azimuth_angle = atan2(vectory, vectorx);
+  elevation_angle = atan2(vectorz, sqrt(pow(vectorx, 2) + pow(vectory, 2)));
 }
