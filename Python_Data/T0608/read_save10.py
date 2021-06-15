@@ -1,7 +1,7 @@
 
 import numpy as np
 
-filename = 't0610_1.csv' # save file name
+from time import strftime
  
 import serial   
 f = open(filename,'w')

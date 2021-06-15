@@ -1,7 +1,11 @@
 
 import numpy as np
 
-filename = 't0609_2.csv' # save file name
+from time import strftime
+ 
+time = strftime("%d_%H_%M")
+
+filename = 'imu_' + time + '_C.csv'
  
 import serial   
 f = open(filename,'w')
@@ -22,7 +26,7 @@ with serial.Serial("com15", 115200) as ser:
             f.write(a)
             if (t%100 == 1):
                 print('t=', t)
-            if t > 20000: # collect t of samples 
+            if t > 40000: # collect t of samples 
                 break
         
         elif (len(line)> 35):
