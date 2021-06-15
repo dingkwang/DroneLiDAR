@@ -164,11 +164,8 @@ void loop() {
     sprintf(buf, "%02d", J);
     Serial.print(buf);
   }
-
   Serial.print("\n");
 }
-
-
 
 float x, y, z; //vicon position, updated by read_vicon(), used in aim_at_target()
 char *field;  //temporary pointer
