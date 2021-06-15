@@ -61,21 +61,11 @@ void comp_scan()
     thy_b = thy ;
   }
   
-  if (motion_on) {
+  if (translation_on) {
     thx_b = thx_b - azimuth_angle * 180.0 / 3.1415926;
     thy_b = thy_b + elevation_angle * 180.0 / 3.1415926;
   }
-//  Serial.print("Azimuth: ");
-//  Serial.print(azimuth_angle * 180.0 / 3.1415926);
-//  Serial.print(",");
-//  Serial.print("Elevation: ");
-//  Serial.print(elevation_angle * 180.0 / 3.1415926);
-//  Serial.print(",");
-//  
-//  Serial.print(thx_b, 1);
-//  Serial.print(",");
-//  Serial.print(thy_b, 1);
-//  Serial.print(",");
+
 
   a2v();
   //  Serial.print(",vx,");

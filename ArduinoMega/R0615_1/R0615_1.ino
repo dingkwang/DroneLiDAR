@@ -7,10 +7,15 @@
 
 #include <SPI.h>
 
-bool isTDC = 0;
-bool printPXY = 0;
+bool isTDC = 1;
+bool printPXY = 1;
 bool printIMU = 1;
 bool isScan = printIMU;
+
+
+bool imu_on  = 1;
+bool translation_on = 0;
+
 
 char buf[10];
 float thxa[100], thya[100]; // max. pixels
@@ -27,8 +32,8 @@ int i;
 int j;
 int I = 0, J = 0;
 int multi;
-bool imu_on  = 1;
-bool motion_on = 1;
+
+
 
 float elapsedTime, currentTime, previousTime;
 float init_time, re_time;
@@ -45,9 +50,9 @@ void setup() {
   //set pwm // set MEMS acting frequency to 15kHz
   TCCR2B = TCCR2B & B11111000 | B00000001;      // D9 for PWM frequency of 40k Hz
   TCCR5B = TCCR5B & B11111000 | B00000001; // D44, 45, 46
-  Serial3.begin (115200);
+//  Serial3.begin (115200);
   Serial2.begin (115200);
-  Serial.begin(115200); //Set your serial monitor to this frequency 115200
+  Serial.begin(230400); //Set your serial monitor to this frequency 115200
   // TDC set
   pinMode (CS_1, OUTPUT);
   pinMode (CS_2, OUTPUT);
@@ -115,7 +120,6 @@ void setup() {
 }// end setup
 
 void loop() {
-
   if (isScan) {
     comp_scan();
     // This print the Compensated Angle = APD view angle
@@ -171,14 +175,16 @@ void loop() {
     Serial.print(buf);
   }
 
-  read_vicon();
-  aim_at_target(TargetX, TargetY, TargetZ);
-  Serial.print("Azimuth: ");
-  Serial.print(azimuth_angle * 180.0 / 3.1415926);
-  Serial.print(",");
-  Serial.print("Elevation: ");
-  Serial.print(elevation_angle * 180.0 / 3.1415926);
-  //azimuth_angle
+  if (translation_on) {
+    read_vicon();
+    aim_at_target(TargetX, TargetY, TargetZ);
+    Serial.print("Azimuth: ");
+    Serial.print(azimuth_angle * 180.0 / 3.1415926);
+    Serial.print(",");
+    Serial.print("Elevation: ");
+    Serial.print(elevation_angle * 180.0 / 3.1415926);
+  }
+
 
   Serial.print("\n");
 
